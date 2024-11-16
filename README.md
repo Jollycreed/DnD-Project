@@ -33,13 +33,14 @@ This project is a **text-based RPG game** based on D&D where players create a ch
   - Dynamic armor class (AC) calculation based on class and equipment.
 
 ### How to Play
-1. **Create or Load a Character**.
-2. **Engage in Battles** by choosing actions each turn:
+1. **Download the code**
+2. **Open your terminal**, navigate to the game folder and type: **gcc main.c character.c enemy.c battle.c utils.c spell.c -o rpg_game** to build the game itself, then type: **./rpg_game**
+3. **Create or Load a Character**.
+4. **Engage in Battles** by choosing actions each turn:
    - Attack with your weapon.
    - Use a healing potion.
    - Cast a spell.
-3. **Defeat enemies**, gain XP, and level up your character.
-4. Progress through increasingly difficult battles.
+5. **Defeat enemies**, gain XP, and level up your character.
 
 ### Technology Stack
 - **C Programming Language**
@@ -51,3 +52,4 @@ This project is a **text-based RPG game** based on D&D where players create a ch
 - Implement movement, and a battle scenario description.
 - Add party members and not only the playable character, add different enemies.
 - Enhance the inventory system with consumables and gear upgrades.
+- Probably a way to normally download and launch the game honestly.
