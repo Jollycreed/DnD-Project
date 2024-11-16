@@ -1,5 +1,4 @@
 # Ignore a specific file
 character_save.txt
-.gitignore 
 .vscode
 --public

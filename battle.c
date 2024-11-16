@@ -68,7 +68,10 @@ void startBattle(Character *player, Enemy *enemy) {
 }
 
 void playerAttack(Character *player, Enemy *enemy) {
-    int attacks = player->extraAttack ? 2 : 1;  // Extra Attack at level 5 for Warrior/Rogue
+    int attacks = (player->extraAttack && 
+                  (strcmp(player->class, "Warrior") == 0 || 
+                   strcmp(player->class, "Rogue") == 0)) ? 2 : 1;
+
     for (int i = 0; i < attacks; i++) {
         printf("\nAttack %d:\n", i + 1);
         int attackRoll = rollDice(20) + getModifier(player->strength);
@@ -76,11 +79,26 @@ void playerAttack(Character *player, Enemy *enemy) {
 
         if (attackRoll >= enemy->armorClass) {
             int damage = 0;
+
             if (strcmp(player->class, "Rogue") == 0) {
-                damage = rollDice(4) + rollDice(4) + getModifier(player->dexterity);  // Two daggers and uses Dex
-            } else if (strcmp(player->class, "Warrior") == 0 && player->weaponDamage == 12) {
-                damage = rollDice(6) + rollDice(6) + getModifier(player->strength);  // 2d6 for Two-Handed Sword
-            } else {
+                // Rogue attacks with two daggers
+                damage = rollDice(4) + rollDice(4) + getModifier(player->dexterity);  
+            } 
+            else if (strcmp(player->class, "Warrior") == 0) {
+                if (player->weaponDamage == 12) { 
+                    // Warrior with Two-Handed Sword
+                    damage = rollDice(6) + rollDice(6) + getModifier(player->strength);  
+                } else { 
+                    // Warrior with Sword and Shield (1d6)
+                    damage = rollDice(player->weaponDamage) + getModifier(player->strength);
+                }
+            } 
+            else if (strcmp(player->class, "Mage") == 0 || strcmp(player->class, "Cleric") == 0) {
+                // Mage or Cleric using melee attacks
+                damage = rollDice(player->weaponDamage) + getModifier(player->strength);
+            } 
+            else {
+                // Default case for other classes
                 damage = rollDice(player->weaponDamage) + getModifier(player->strength);
             }
 
@@ -92,12 +110,14 @@ void playerAttack(Character *player, Enemy *enemy) {
             enemy->hp -= damage;
             printf("You dealt %d damage! Enemy HP: %d/%d\n", damage, enemy->hp, enemy->maxHp);
 
-            if (enemy->hp <= 0) break;  // Exit loop if enemy is defeated
+            if (enemy->hp <= 0) break;  // Stop further attacks if the enemy is defeated
         } else {
-            printf("You missed!\n");
+            printf("You missed! The enemy dodges swiftly.\n");
         }
     }
 }
+
+
 
 void enemyAttack(Enemy *enemy, Character *player) {
     int attackRoll = rollDice(20) + enemy->attackBonus;
