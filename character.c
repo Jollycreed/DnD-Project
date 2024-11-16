@@ -30,6 +30,19 @@ Character createCharacter() {
 
     newChar.level = 1;
     newChar.experience = 0;
+
+    // Set hit dice value based on class
+    if (strcmp(newChar.class, "Warrior") == 0) {
+        newChar.hitDiceValue = 12;  // 1d12 for Warrior
+    } else if (strcmp(newChar.class, "Cleric") == 0) {
+        newChar.hitDiceValue = 8;   // 1d8 for Cleric
+    } else if (strcmp(newChar.class, "Mage") == 0) {
+        newChar.hitDiceValue = 6;   // 1d6 for Mage
+    } else if (strcmp(newChar.class, "Rogue") == 0) {
+        newChar.hitDiceValue = 8;   // 1d8 for Rogue
+    }
+
+    newChar.hitDice = newChar.level;  // Number of hit dice equals character level
     setupInventory(&newChar);
     newChar.hp = newChar.maxHp;
     return newChar;
@@ -130,10 +143,12 @@ void addExperience(Character *player, int xp) {
 
 void levelUp(Character *player) {
     player->level++;
+    player->hitDice = player->level;  // Update hit dice to match new level
+
     printf("\nCongratulations! You reached level %d!\n", player->level);
 
-    int hpGain = rollDice(10) + getModifier(player->constitution);
-    player->maxHp += hpGain;
+    int hpGain = rollDice(player->hitDiceValue) + getModifier(player->constitution);
+    player->maxHp += (hpGain > 0) ? hpGain : 1;  // Ensure at least 1 HP gain
     player->hp = player->maxHp;
 
     if (player->level == 5 &&
@@ -141,7 +156,10 @@ void levelUp(Character *player) {
         player->extraAttack = 1;
         printf("You gained Extra Attack! You can now attack twice in your turn.\n");
     }
+
+    initializeSpellSlots(player);  // Recalculate spell slots for spellcasters
 }
+
 
 void initializeSpellSlots(Character *player) {
     for (int i = 0; i < 9; i++) {

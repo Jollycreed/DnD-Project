@@ -1,4 +1,6 @@
 #include <stdlib.h>
+#include <time.h>
+#include "utils.h"
 
 int rollDice(int sides) {
     return (rand() % sides) + 1;
