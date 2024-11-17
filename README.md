@@ -1,55 +1,82 @@
-# D&D Project
-## Text-Based RPG Game
+# **D&D PROJECT**
+*Text-Based RPG Game*
 
-### Description
-This project is a **text-based RPG game** based on D&D where players create a character and engage in turn-based battles against enemies. The game focuses on character progression, strategic combat, and spellcasting mechanics, all managed through a simple command-line interface.
-
+This project is a text-based RPG game inspired by Dungeons & Dragons. Players create a character, progress through levels, and engage in turn-based battles. The game offers strategic combat, character customization, and a dynamic spellcasting system—all accessible via a simple command-line interface.
 ### Features
-- **Character Creation**:
-  - Choose from four classes: **Warrior**, **Cleric**, **Mage**, or **Rogue**.
-  - Assign attribute points to customize your character's abilities.
-  
-- **Combat System**:
-  - Turn-based battles against various enemies.
-  - Each class has unique combat mechanics:
-    - **Warrior**: Option to wield a **Two-Handed Sword** (2d6 damage) or a **Sword and Shield** (1d6 + AC bonus).
-    - **Rogue**: Dual-wields **daggers** (2d4 damage) and benefits from double dexterity for AC.
-    - **Cleric**: Uses a **shield** for defense and casts healing or damage spells.
-    - **Mage**: Focuses on offensive spells with elemental effects.
-  - Extra attack unlocked for **Warriors** and **Rogues** at level 5.
+##### Character Creation
 
-- **Spellcasting**:
-  - **Clerics** and **Mages** can cast spells using spell slots.
-  - Spells scale in power when cast with higher-level spell slots.
-  - Spell mechanics include **damage**, **healing**, and **stunning** effects.
+Choose from a variety of classes:
+- Paladin
+- Cleric
+- Wizard
+- Rogue
+- Warlock
+- Bard
+- Fighter
+- Barbarian
+- Ranger
+- Sorcerer
+- Druid
+- Monk
+##### Assign attributes using the standard array systemAssign attributes using the standard array system (15, 14, 13, 12, 10, 8).
+   Select equipment and weaponry unique to each class.
 
-- **Level Progression**:
-  - Gain experience points (XP) by defeating enemies.
-  - Level up to improve stats and gain new abilities.
-  - Automatically update spell slot availability and unlock new combat features.
+#### Combat System
 
-- **Inventory and Equipment**:
-  - Different weapons and armor for each class.
-  - Dynamic armor class (AC) calculation based on class and equipment.
+- Turn-based battles against procedurally generated enemies, including challenging bosses.
+- Each class has unique combat abilities:
+- Fighter, Paladin, Barbarian: Unlock Extra Attack at level 5.
+- Rogue: Dual-wields daggers with double dexterity AC bonus.
+- Spellcasters: Cast scaling spells with diverse effects, including damage, healing, and control.
 
-### How to Play
-1. **Download the code**
-2. **Open your terminal**, navigate to the game folder and type: **gcc main.c character.c enemy.c battle.c utils.c spell.c -o rpg_game** to build the game itself, then type: **./rpg_game**
-3. **Create or Load a Character**.
-4. **Engage in Battles** by choosing actions each turn:
-   - Attack with your weapon.
-   - Use a healing potion.
-   - Cast a spell.
-5. **Defeat enemies**, gain XP, and level up your character.
+#### Spellcasting System
 
-### Technology Stack
-- **C Programming Language**
-- **Command-Line Interface (CLI)** for user interaction.
-- **File I/O** for saving/loading character progress.
+- Cantrips: No spell slot required; always available.
+- Spells: Scale in power when cast using higher-level spell slots.
+- Diverse effects include damage, healing, buffing, control, and utility.
+- Spell slots and spell lists dynamically update as your character levels up.
+
+#### Level Progression
+
+- Earn experience points (XP) by defeating enemies.
+- Level up to unlock new features:
+- Gain HP and stat improvements.
+- Access higher-level spells and abilities.
+- Increase spell slot count.
+
+#### Inventory and Equipment System
+*work in progress*
+- Manage dynamic inventory, including potions, weapons, and armor.
+- Armor Class (AC) adjusts based on equipped gear.
+- Loot system for acquiring resources and consumables after battles.
+
+#### Hardcore Mode
+If selected: 
+**    Permadeath mechanics: Characters deleted upon death, offering a high-risk, high-reward gameplay experience.**
+
+## How to Play
+
+  Download the code from the repository.
+  Open your terminal and navigate to the game folder.
+  Compile the game by running:
+
+`gcc main.c -o rpg_game`
+
+##### Start the game:
+
+`./rpg_game`
+
+
+## Technology Stack
+
+    C Programming Language
+    Command-Line Interface (CLI) for user input and interaction.
+    File I/O for saving/loading character progress.
 
 ### Future Improvements
-- Add more enemy types and battle scenarios.
-- Implement movement, and a battle scenario description.
-- Add party members and not only the playable character, add different enemies.
-- Enhance the inventory system with consumables and gear upgrades.
-- Probably a way to normally download and launch the game honestly.
+
+    Expanded enemy types: Introduce new battle scenarios with diverse foes.
+    Story integration: Add descriptive narratives for battle locations and enemies.
+    Party system: Include additional party members and cooperative mechanics.
+    Expanded inventory system: Introduce gear upgrades and consumables beyond health potions.
+    Distribution improvements: Develop an easier installation and launch method for players.
