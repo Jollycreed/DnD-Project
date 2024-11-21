@@ -75,8 +75,5 @@ If selected:
 
 ### Future Improvements
 
-    Expanded enemy types: Introduce new battle scenarios with diverse foes.
-    Story integration: Add descriptive narratives for battle locations and enemies.
-    Party system: Include additional party members and cooperative mechanics.
-    Expanded inventory system: Introduce gear upgrades and consumables beyond health potions.
-    Distribution improvements: Develop an easier installation and launch method for players.
+  ### I DECIDED TO UPGRADE THE PROJECT INTO A BIGGER GAME, UPDATES COMING SOON-ish 
+The old code is currently bugged, but will remain in the tags and releases for record, this ReadMe will be updated when the next release comes to reflect the changes made to the project. 
