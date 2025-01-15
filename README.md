@@ -77,3 +77,4 @@ If selected:
 
   ### I DECIDED TO UPGRADE THE PROJECT INTO A BIGGER GAME, UPDATES COMING SOON-ish 
 The old code is currently bugged, but will remain in the tags and releases for record, this ReadMe will be updated when the next release comes to reflect the changes made to the project. 
+The new game is available at: https://github.com/Jollycreed/DungeonGame
