@@ -28,44 +28,81 @@ Per creare release dedicate per ogni sistema operativo, usa lo script:
 
 ```bash
 chmod +x package_release.sh
-./package_release.sh
+# D&D Text Adventure
+
+Terminal-based single-player adventure inspired by D&D, written in C.
+
+This repository contains the game source, helper scripts and a CI workflow
+that produces OS-specific release assets.
+
+## Quick start
+
+Linux / macOS:
+
+1. Make scripts executable:
+
+```bash
+chmod +x start.sh package_release.sh
 ```
 
-I pacchetti vengono generati in `dist/` e includono:
+2. Start the game:
+
+```bash
+./start.sh
+```
+
+Windows:
+
+Extract `dnd-game-windows.zip` from the Releases page and double-click
+`start_windows.bat`, or run it from `cmd`.
+
+## Manual build
+
+To compile locally:
+
+```bash
+gcc -o dnd_game main.c -Wall -std=c99 -O2
+./dnd_game
+```
+
+## Releases and packaging
+
+Run `package_release.sh` to create local release packages in `dist/`, or
+publish a GitHub Release and let the workflow `.github/workflows/release.yml`
+build and attach official release artifacts:
+
 - `dnd-game-linux.tar.gz`
-- `dnd-game-windows.zip`
+- `dnd-game-windows.zip` (built on Windows runner; contains `dnd_game.exe`)
 - `dnd-game-macos.zip`
 
-Se pubblichi una release su GitHub, il workflow `.github/workflows/release.yml` può costruire e allegare automaticamente gli asset.
+Provide `dnd-game-windows.zip` to Windows testers so they can run the game
+without compiling. Optionally create a desktop shortcut to `dnd_game.exe` or
+`start_windows.bat` for easy launching.
 
-## Salvataggi
+## Saves
 
-I personaggi salvati sono file `.txt` nella cartella `saves/`.
-Usa la voce del menu "List Saved Characters" per visualizzare tutti i salvataggi.
+Saved characters are plain-text files in the `saves/` directory.
 
-## File principali
+## Project files
 
-- `main.c` : codice sorgente del gioco
-- `README.md` : documentazione principale
-- `Dockerfile` : immagine Docker
-- `Makefile` : comandi di build e pulizia
-- `start.sh` : avvio rapido su Linux/macOS
-- `start_linux.sh` / `start_macos.sh` / `start_windows.bat` : launcher specifici
-- `build_windows.sh` : helper per compilare un `.exe` Windows con MinGW
-- `build_docker.sh` : build dell'immagine Docker
-- `run_game.sh` : avvia il gioco in Docker
-- `package_release.sh` : crea pacchetti di distribuzione per release OS-specifiche
-- `.github/workflows/release.yml` : workflow per creare asset GitHub Release
-- `docker-compose.yml` : configurazione Docker Compose facoltativa
-- `saves/` : directory dei salvataggi dei personaggi
+- `main.c` — game source
+- `README.md` — this file
+- `Dockerfile`, `build_docker.sh`, `run_game.sh` — Docker support
+- `start.sh`, `start_linux.sh`, `start_macos.sh`, `start_windows.bat` — launchers
+- `build_windows.sh` — MinGW helper for Windows `.exe`
+- `package_release.sh` — local packaging helper
+- `.github/workflows/release.yml` — CI workflow for release assets
 
-## Avvio semplice su Windows
+## Contributing
 
-Se distribuisci `dnd-game-windows.zip`, il tester può semplicemente aprire la cartella estratta e fare doppio clic su `start_windows.bat`.
-Per un avvio "tipo gioco normale", crea un collegamento sul desktop a `start_windows.bat` o a `dnd_game.exe`.
+Bug reports and pull requests are welcome. Please open issues or PRs against
+the `main` branch.
 
-## Note
+## License
 
-- I salvataggi vengono salvati e caricati automaticamente da `saves/`.
-- Al termine di una battaglia, il gioco richiede di premere Invio prima di tornare al menu.
-- Il file `INSTALLATION.txt` è stato rimosso perché ridondante rispetto a questo README.
+Add your license file to the repository (e.g. `LICENSE`).
+
+---
+
+If you want, I can create a draft release to trigger the Actions workflow and
+verify that the Windows `.exe` is produced on the GitHub runner.
