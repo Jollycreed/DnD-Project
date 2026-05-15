@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  dnd-game:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: dnd-game:latest
+    container_name: dnd-adventure
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./saves:/app/saves
+    restart: no

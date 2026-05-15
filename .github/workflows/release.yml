@@ -1,0 +1,73 @@
+name: Build Release Packages
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  linux:
+    name: Build Linux package
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Linux binary
+        run: |
+          gcc -o dnd_game main.c -Wall -std=c99 -O2
+      - name: Package Linux
+        run: |
+          mkdir -p release/linux
+          cp main.c README.md start.sh start_linux.sh Dockerfile build_docker.sh run_game.sh .dockerignore release/linux/
+          cp dnd_game release/linux/ || true
+          tar -czf dnd-game-linux.tar.gz -C release/linux .
+      - name: Upload Linux release asset
+        uses: softprops/action-gh-release@v1
+        with:
+          files: dnd-game-linux.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  windows:
+    name: Build Windows package
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Windows binary
+        shell: bash
+        run: |
+          gcc -o dnd_game.exe main.c -Wall -std=c99 -O2
+      - name: Package Windows
+        shell: bash
+        run: |
+          mkdir -p release/windows
+          cp main.c README.md start_windows.bat build_windows.sh run_game.sh .dockerignore release/windows/
+          cp dnd_game.exe release/windows/ || true
+          cd release/windows
+          zip -r ../../dnd-game-windows.zip .
+      - name: Upload Windows release asset
+        uses: softprops/action-gh-release@v1
+        with:
+          files: dnd-game-windows.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  macos:
+    name: Build macOS package
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build macOS binary
+        run: |
+          clang -o dnd_game main.c -Wall -std=c99 -O2
+      - name: Package macOS
+        run: |
+          mkdir -p release/macos
+          cp main.c README.md start_macos.sh Dockerfile build_docker.sh run_game.sh .dockerignore release/macos/
+          cp dnd_game release/macos/ || true
+          cd release/macos
+          zip -r ../../dnd-game-macos.zip .
+      - name: Upload macOS release asset
+        uses: softprops/action-gh-release@v1
+        with:
+          files: dnd-game-macos.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

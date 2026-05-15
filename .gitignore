@@ -1,0 +1,23 @@
+# Build artifacts
+dnd_game
+# Local binaries
+Dnd_game
+# Windows executable
+*.exe
+
+# Distribution packages
+dist/
+
+# Saves directory
+saves/
+
+# Temporary files
+*.o
+*.tmp
+*.log
+
+# macOS
+.DS_Store
+
+# Visual Studio Code settings
+.vscode/

@@ -1,0 +1,13 @@
+.git
+.gitignore
+README.md
+*.swp
+*.swo
+*~
+.DS_Store
+saves/
+*.txt
+build_docker.sh
+run_game.sh
+setup.sh
+main.c

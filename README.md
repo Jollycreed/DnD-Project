@@ -1,80 +1,71 @@
-# **D&D PROJECT**
-*Text-Based RPG Game*
+# D&D Text Adventure
 
-This project is a text-based RPG game inspired by Dungeons & Dragons. Players create a character, progress through levels, and engage in turn-based battles. The game offers strategic combat, character customization, and a dynamic spellcasting system—all accessible via a simple command-line interface.
-### Features
-##### Character Creation
+Gioco da terminale in C con meccaniche ispirate a D&D. Il salvataggio dei personaggi avviene localmente nella cartella `saves/`.
 
-Choose from a variety of classes:
-- Paladin
-- Cleric
-- Wizard
-- Rogue
-- Warlock
-- Bard
-- Fighter
-- Barbarian
-- Ranger
-- Sorcerer
-- Druid
-- Monk
-##### Assign attributes using the standard array systemAssign attributes using the standard array system (15, 14, 13, 12, 10, 8).
-   Select equipment and weaponry unique to each class.
+## Avvio rapido
 
-#### Combat System
+### Linux / macOS
 
-- Turn-based battles against procedurally generated enemies, including challenging bosses.
-- Each class has unique combat abilities:
-- Fighter, Paladin, Barbarian: Unlock Extra Attack at level 5.
-- Rogue: Dual-wields daggers with double dexterity AC bonus.
-- Spellcasters: Cast scaling spells with diverse effects, including damage, healing, and control.
+```bash
+chmod +x start.sh start_linux.sh start_macos.sh build_windows.sh
+./start.sh
+```
 
-#### Spellcasting System
+### Windows
 
-- Cantrips: No spell slot required; always available.
-- Spells: Scale in power when cast using higher-level spell slots.
-- Diverse effects include damage, healing, buffing, control, and utility.
-- Spell slots and spell lists dynamically update as your character levels up.
+Apri `start_windows.bat` con un doppio clic o esegui da `cmd`.
 
-#### Level Progression
+## Compilazione manuale
 
-- Earn experience points (XP) by defeating enemies.
-- Level up to unlock new features:
-- Gain HP and stat improvements.
-- Access higher-level spells and abilities.
-- Increase spell slot count.
+```bash
+gcc -o dnd_game main.c -Wall -std=c99 -O2
+./dnd_game
+```
 
-#### Inventory and Equipment System
-*work in progress*
-- Manage dynamic inventory, including potions, weapons, and armor.
-- Armor Class (AC) adjusts based on equipped gear.
-- Loot system for acquiring resources and consumables after battles.
+## Pacchetti e release OS-specifiche
 
-#### Hardcore Mode
-If selected: 
-**    Permadeath mechanics: Characters deleted upon death, offering a high-risk, high-reward gameplay experience.**
+Per creare release dedicate per ogni sistema operativo, usa lo script:
 
-## How to Play
+```bash
+chmod +x package_release.sh
+./package_release.sh
+```
 
-  Download the code from the repository.
-  Open your terminal and navigate to the game folder.
-  Compile the game by running:
+I pacchetti vengono generati in `dist/` e includono:
+- `dnd-game-linux.tar.gz`
+- `dnd-game-windows.zip`
+- `dnd-game-macos.zip`
 
-`gcc main.c -o rpg_game`
+Se pubblichi una release su GitHub, il workflow `.github/workflows/release.yml` può costruire e allegare automaticamente gli asset.
 
-##### Start the game:
+## Salvataggi
 
-`./rpg_game`
+I personaggi salvati sono file `.txt` nella cartella `saves/`.
+Usa la voce del menu "List Saved Characters" per visualizzare tutti i salvataggi.
 
+## File principali
 
-## Technology Stack
+- `main.c` : codice sorgente del gioco
+- `README.md` : documentazione principale
+- `Dockerfile` : immagine Docker
+- `Makefile` : comandi di build e pulizia
+- `start.sh` : avvio rapido su Linux/macOS
+- `start_linux.sh` / `start_macos.sh` / `start_windows.bat` : launcher specifici
+- `build_windows.sh` : helper per compilare un `.exe` Windows con MinGW
+- `build_docker.sh` : build dell'immagine Docker
+- `run_game.sh` : avvia il gioco in Docker
+- `package_release.sh` : crea pacchetti di distribuzione per release OS-specifiche
+- `.github/workflows/release.yml` : workflow per creare asset GitHub Release
+- `docker-compose.yml` : configurazione Docker Compose facoltativa
+- `saves/` : directory dei salvataggi dei personaggi
 
-    C Programming Language
-    Command-Line Interface (CLI) for user input and interaction.
-    File I/O for saving/loading character progress.
+## Avvio semplice su Windows
 
-### Future Improvements
+Se distribuisci `dnd-game-windows.zip`, il tester può semplicemente aprire la cartella estratta e fare doppio clic su `start_windows.bat`.
+Per un avvio "tipo gioco normale", crea un collegamento sul desktop a `start_windows.bat` o a `dnd_game.exe`.
 
-  ### I DECIDED TO UPGRADE THE PROJECT INTO A BIGGER GAME, UPDATES COMING SOON-ish 
-The old code is currently bugged, but will remain in the tags and releases for record, this ReadMe will be updated when the next release comes to reflect the changes made to the project. 
-The new game is available at: https://github.com/Jollycreed/DungeonGame
+## Note
+
+- I salvataggi vengono salvati e caricati automaticamente da `saves/`.
+- Al termine di una battaglia, il gioco richiede di premere Invio prima di tornare al menu.
+- Il file `INSTALLATION.txt` è stato rimosso perché ridondante rispetto a questo README.
