@@ -60,7 +60,14 @@ jobs:
       - name: Build Windows NSIS installer
         shell: pwsh
         run: |
-          makensis -V2 installer\\dnd_installer.nsi
+          refreshenv || true
+          $nsis = 'C:\\ProgramData\\chocolatey\\bin\\makensis.exe'
+          if (Test-Path $nsis) {
+            & $nsis -V2 installer\\dnd_installer.nsi
+          } else {
+            Write-Error "makensis not found at $nsis"
+            exit 1
+          }
           Move-Item -Path dnd-game-installer.exe -Destination release/windows/ -Force
       - name: Upload Windows release assets
         if: github.event_name == 'release'
