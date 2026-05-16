@@ -1,27 +1,58 @@
-# 🎲 D&D Text Adventure — Terminal RPG ⚔️
+# 🎲 D&D Text Adventure ⚔️
 
 [![C CI/CD Pipeline](https://github.com/Jollycreed/DnD-Project/actions/workflows/release.yml/badge.svg)](https://github.com/Jollycreed/DnD-Project/actions)
 ![Language](https://img.shields.io/badge/Language-C99-blue.svg)
 ![Platform](https://img.shields.io/badge/Platform-Linux%20%7C%20Windows%20%7C%20macOS-lightgrey.svg)
 
-Una ricca avventura testuale single-player da terminale ispirata alle regole di **Dungeons & Dragons 5e**, scritta interamente in **C**. Crea il tuo eroe distribuendo le statistiche con lo *Standard Array*, seleziona razza e classe, gestisci l'inventario e affronta mostri e boss in un sistema di combattimento a turni guidato dai classici tiri di dado ($d20$).
+Un gioco di ruolo testuale single-player scritto in C (C99), ispirato alle regole di Dungeons & Dragons 5e.
+
+Il progetto include un sistema di creazione del personaggio (basato su Standard Array), gestione delle risorse di classe (slot incantesimo, ira, punti Ki), combattimento a turni con tiri di dado ($d20$) e salvataggi locali.
 
 ---
 
-## 🚀 Caratteristiche Principali
+## Prerequisiti
 
-* **Creazione Personaggio Completa:** Scelta di Razza, Classe e allocazione delle caratteristiche (15, 14, 13, 12, 10, 8) con calcolo automatico dei modificatori e dei Punti Ferita ($HP$).
-* **Meccaniche di Classe Avanzate:** Gestione degli slot incantesimo per i maghi, punti *Ira* (Rage) per i Barbari, punti *Ki* per i Monaci e Punti Azione per i Guerrieri.
-* **Sistema di Combattimento Dinamico:** Iniziativa basata sulla Destrezza, tiri per colpire contro la Classe Armatura ($AC$), gestione degli stati alterati (es. Stordimento) e Loot casuale.
-* **Salvataggio Persistente:** Riprendi l'avventura quando vuoi. I salvataggi vengono gestiti automaticamente in formato flat-file all'interno della cartella `saves/` (con pieno supporto ai nomi con spazi).
-* **Cross-Platform CI/CD:** Pipeline automatizzata tramite GitHub Actions che compila ed esporta nativamente gli eseguibili per **Linux**, **Windows** (`.exe`) e **macOS**.
+Per compilare ed eseguire il progetto in locale è necessario un compilatore C (`gcc` o `clang`).
+
+Su sistemi Windows, i runner di build utilizzano la toolchain MSYS2/MinGW. È presente anche il supporto a Docker per l'esecuzione in ambiente containerizzato.
 
 ---
 
-## 🎮 Avvio Rapido
+## Avvio Rapido
+## Linux / macOS
 
-### 🐧 Linux & 🍏 macOS
-Il repository include un launcher universale che automatizza i permessi e gestisce l'avvio:
+Assegna i permessi di esecuzione allo script di avvio ed eseguilo:
 ```bash
 chmod +x start.sh
 ./start.sh
+```
+
+(Dopo aver dato i permessi la prima volta, è possibile avviare il gioco anche facendo doppio clic su start.sh dal file manager).
+
+---
+
+## Windows
+
+Scarica l'archivio dnd-game-windows.zip dall'area Releases, estrailo e lancia:
+```DOS
+start_windows.bat
+```
+
+# Compilazione
+gcc -o dnd_game main.c -Wall -std=c99 -O2
+
+# Esecuzione
+```bash
+./dnd_game
+```
+# Struttura del Repository
+
+*  main.c: Codice sorgente principale del gioco.
+*  saves/: Directory locale in cui vengono scritti i file di salvataggio.
+*  start.sh / start_windows.bat: Script di runtime per l'avvio rapido sui diversi OS.
+*  Dockerfile / build_docker.sh: Configurazione per la containerizzazione.
+*  .github/workflows/release.yml: Pipeline di GitHub Actions per la cross-compilazione automatica dei binari ad ogni release.
+
+# Contributi
+
+Se riscontri bug nel calcolo dei modificatori o crash di segmentazione durante i combattimenti, apri una Issue o una Pull Request direttamente sul branch main.
