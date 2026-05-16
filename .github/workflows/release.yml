@@ -8,6 +8,8 @@ on:
   release:
     types: [published]
   workflow_dispatch:
+  push:
+    branches: [ main ] # Almeno vedi se funziona ad ogni push senza fare release finte!
 
 jobs:
   linux:
@@ -15,15 +17,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      
       - name: Build Linux binary
-        run: |
-          gcc -o dnd_game main.c -Wall -std=c99 -O2
+        run: gcc -o dnd_game main.c -Wall -std=c99 -O2
+        
       - name: Package Linux
         run: |
           mkdir -p release/linux
-          cp main.c README.md start.sh start_linux.sh Dockerfile build_docker.sh run_game.sh .dockerignore release/linux/
+          cp main.c README.md start.sh start_linux.sh Dockerfile build_docker.sh run_game.sh .dockerignore release/linux/ || true
           cp dnd_game release/linux/ || true
           tar -czf dnd-game-linux.tar.gz -C release/linux .
+          
+      - name: Upload Linux Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dnd-game-linux
+          path: dnd-game-linux.tar.gz
+
       - name: Upload Linux release asset
         if: github.event_name == 'release'
         uses: softprops/action-gh-release@v1
@@ -37,51 +47,50 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
+      
       - name: Install MSYS2 and GCC
         uses: msys2/setup-msys2@v2
         with:
           update: true
           install: mingw-w64-x86_64-gcc
+          
       - name: Build Windows binary
-        shell: bash
-        run: |
-          gcc -o dnd_game.exe main.c -Wall -std=c99 -O2
+        shell: msys2 {0} # Forza l'ambiente MSYS2 puro per evitare problemi di path
+        run: gcc -o dnd_game.exe main.c -Wall -std=c99 -O2
+        
       - name: Package Windows
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force -Path release/windows | Out-Null
-          Copy-Item main.c, README.md, start_windows.bat, build_windows.sh, run_game.sh, .dockerignore -Destination release/windows/ -Force
-          Copy-Item dnd_game.exe -Destination release/windows/ -Force
-          Compress-Archive -Path release/windows/* -DestinationPath dnd-game-windows.zip -Force
-      - name: Install NSIS (for building installer)
-        shell: pwsh
-        run: |
-          choco install nsis -y
-      - name: Build Windows NSIS installer
-        shell: pwsh
-        run: |
-          refreshenv || true
-          $nsisCandidates = @(
-            'C:\\ProgramData\\chocolatey\\bin\\makensis.exe',
-            'C:\\Program Files (x86)\\NSIS\\makensis.exe',
-            'C:\\Program Files\\NSIS\\makensis.exe'
-          )
-          $found = $null
-          foreach ($p in $nsisCandidates) {
-            if (Test-Path $p) { $found = $p; break }
+          
+          # Controllo se i file esistono prima di copiarli, così non crasha se ne manca uno
+          $filesToCopy = @("main.c", "README.md", "start_windows.bat", "build_windows.sh", "run_game.sh", ".dockerignore")
+          foreach ($file in $filesToCopy) {
+              if (Test-Path $file) {
+                  Copy-Item $file -Destination release/windows/ -Force
+              }
           }
-          if ($found) {
-            & $found -V2 installer\\dnd_installer.nsi
+          
+          if (Test-Path "dnd_game.exe") {
+              Copy-Item dnd_game.exe -Destination release/windows/ -Force
           } else {
-            Write-Error "makensis not found in expected locations: $($nsisCandidates -join ', ')"
-            exit 1
+              Write-Error "ERRORE CRITICO: dnd_game.exe non è stato compilato!"
+              exit 1
           }
-          Move-Item -Path dnd-game-installer.exe -Destination release/windows/ -Force
+          
+          Compress-Archive -Path release/windows/* -DestinationPath dnd-game-windows.zip -Force
+          
+      - name: Upload Windows Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dnd-game-windows
+          path: dnd-game-windows.zip
+
       - name: Upload Windows release assets
         if: github.event_name == 'release'
         uses: softprops/action-gh-release@v1
         with:
-          files: dnd-game-windows.zip,dnd-game-installer.exe
+          files: dnd-game-windows.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -90,16 +99,24 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
+      
       - name: Build macOS binary
-        run: |
-          clang -o dnd_game main.c -Wall -std=c99 -O2
+        run: clang -o dnd_game main.c -Wall -std=c99 -O2
+        
       - name: Package macOS
         run: |
           mkdir -p release/macos
-          cp main.c README.md start_macos.sh Dockerfile build_docker.sh run_game.sh .dockerignore release/macos/
+          cp main.c README.md start_macos.sh Dockerfile build_docker.sh run_game.sh .dockerignore release/macos/ || true
           cp dnd_game release/macos/ || true
           cd release/macos
           zip -r ../../dnd-game-macos.zip .
+          
+      - name: Upload macOS Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dnd-game-macos
+          path: dnd-game-macos.zip
+
       - name: Upload macOS release asset
         if: github.event_name == 'release'
         uses: softprops/action-gh-release@v1
