@@ -61,11 +61,19 @@ jobs:
         shell: pwsh
         run: |
           refreshenv || true
-          $nsis = 'C:\\ProgramData\\chocolatey\\bin\\makensis.exe'
-          if (Test-Path $nsis) {
-            & $nsis -V2 installer\\dnd_installer.nsi
+          $nsisCandidates = @(
+            'C:\\ProgramData\\chocolatey\\bin\\makensis.exe',
+            'C:\\Program Files (x86)\\NSIS\\makensis.exe',
+            'C:\\Program Files\\NSIS\\makensis.exe'
+          )
+          $found = $null
+          foreach ($p in $nsisCandidates) {
+            if (Test-Path $p) { $found = $p; break }
+          }
+          if ($found) {
+            & $found -V2 installer\\dnd_installer.nsi
           } else {
-            Write-Error "makensis not found at $nsis"
+            Write-Error "makensis not found in expected locations: $($nsisCandidates -join ', ')"
             exit 1
           }
           Move-Item -Path dnd-game-installer.exe -Destination release/windows/ -Force
