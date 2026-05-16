@@ -53,11 +53,20 @@ jobs:
           Copy-Item main.c, README.md, start_windows.bat, build_windows.sh, run_game.sh, .dockerignore -Destination release/windows/ -Force
           Copy-Item dnd_game.exe -Destination release/windows/ -Force
           Compress-Archive -Path release/windows/* -DestinationPath dnd-game-windows.zip -Force
-      - name: Upload Windows release asset
+      - name: Install NSIS (for building installer)
+        shell: pwsh
+        run: |
+          choco install nsis -y
+      - name: Build Windows NSIS installer
+        shell: pwsh
+        run: |
+          makensis -V2 installer\\dnd_installer.nsi
+          Move-Item -Path dnd-game-installer.exe -Destination release/windows/ -Force
+      - name: Upload Windows release assets
         if: github.event_name == 'release'
         uses: softprops/action-gh-release@v1
         with:
-          files: dnd-game-windows.zip
+          files: dnd-game-windows.zip,dnd-game-installer.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
