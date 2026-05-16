@@ -1,8 +1,8 @@
 name: Build Release Packages
 
 permissions:
-  contents: read
-  releases: write
+  contents: write
+  packages: write
 
 on:
   release:
