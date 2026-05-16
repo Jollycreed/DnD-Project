@@ -3,6 +3,7 @@ name: Build Release Packages
 on:
   release:
     types: [published]
+  workflow_dispatch:
 
 jobs:
   linux:
@@ -31,18 +32,21 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Install MinGW
+        uses: egor-tensin/setup-gcc@v1
+        with:
+          version: latest
+          platform: x64
       - name: Build Windows binary
-        shell: bash
         run: |
           gcc -o dnd_game.exe main.c -Wall -std=c99 -O2
       - name: Package Windows
-        shell: bash
+        shell: pwsh
         run: |
-          mkdir -p release/windows
-          cp main.c README.md start_windows.bat build_windows.sh run_game.sh .dockerignore release/windows/
-          cp dnd_game.exe release/windows/ || true
-          cd release/windows
-          zip -r ../../dnd-game-windows.zip .
+          New-Item -ItemType Directory -Force -Path release/windows | Out-Null
+          Copy-Item main.c, README.md, start_windows.bat, build_windows.sh, run_game.sh, .dockerignore -Destination release/windows/ -Force
+          Copy-Item dnd_game.exe -Destination release/windows/ -Force
+          Compress-Archive -Path release/windows/* -DestinationPath dnd-game-windows.zip -Force
       - name: Upload Windows release asset
         uses: softprops/action-gh-release@v1
         with:
