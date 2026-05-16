@@ -25,6 +25,7 @@ jobs:
           cp dnd_game release/linux/ || true
           tar -czf dnd-game-linux.tar.gz -C release/linux .
       - name: Upload Linux release asset
+        if: github.event_name == 'release'
         uses: softprops/action-gh-release@v1
         with:
           files: dnd-game-linux.tar.gz
@@ -36,12 +37,13 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Install MinGW
-        uses: egor-tensin/setup-mingw@v1
+      - name: Install MSYS2 and GCC
+        uses: msys2/setup-msys2@v2
         with:
-          version: latest
-          x64: true
+          update: true
+          install: mingw-w64-x86_64-gcc
       - name: Build Windows binary
+        shell: bash
         run: |
           gcc -o dnd_game.exe main.c -Wall -std=c99 -O2
       - name: Package Windows
@@ -52,6 +54,7 @@ jobs:
           Copy-Item dnd_game.exe -Destination release/windows/ -Force
           Compress-Archive -Path release/windows/* -DestinationPath dnd-game-windows.zip -Force
       - name: Upload Windows release asset
+        if: github.event_name == 'release'
         uses: softprops/action-gh-release@v1
         with:
           files: dnd-game-windows.zip
@@ -74,6 +77,7 @@ jobs:
           cd release/macos
           zip -r ../../dnd-game-macos.zip .
       - name: Upload macOS release asset
+        if: github.event_name == 'release'
         uses: softprops/action-gh-release@v1
         with:
           files: dnd-game-macos.zip
