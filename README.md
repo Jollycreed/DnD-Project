@@ -1,108 +1,27 @@
-# D&D Text Adventure
+# 🎲 D&D Text Adventure — Terminal RPG ⚔️
 
-Gioco da terminale in C con meccaniche ispirate a D&D. Il salvataggio dei personaggi avviene localmente nella cartella `saves/`.
+[![C CI/CD Pipeline](https://github.com/Jollycreed/DnD-Project/actions/workflows/release.yml/badge.svg)](https://github.com/Jollycreed/DnD-Project/actions)
+![Language](https://img.shields.io/badge/Language-C99-blue.svg)
+![Platform](https://img.shields.io/badge/Platform-Linux%20%7C%20Windows%20%7C%20macOS-lightgrey.svg)
 
-## Avvio rapido
-
-### Linux / macOS
-
-```bash
-chmod +x start.sh start_linux.sh start_macos.sh build_windows.sh
-./start.sh
-```
-
-### Windows
-
-Apri `start_windows.bat` con un doppio clic o esegui da `cmd`.
-
-## Compilazione manuale
-
-```bash
-gcc -o dnd_game main.c -Wall -std=c99 -O2
-./dnd_game
-```
-
-## Pacchetti e release OS-specifiche
-
-Per creare release dedicate per ogni sistema operativo, usa lo script:
-
-```bash
-chmod +x package_release.sh
-# D&D Text Adventure
-
-Terminal-based single-player adventure inspired by D&D, written in C.
-
-This repository contains the game source, helper scripts and a CI workflow
-that produces OS-specific release assets.
-
-## Quick start
-
-Linux / macOS:
-
-1. Make scripts executable:
-
-```bash
-chmod +x start.sh package_release.sh
-```
-
-2. Start the game:
-
-```bash
-./start.sh
-```
-
-Windows:
-
-Extract `dnd-game-windows.zip` from the Releases page and double-click
-`start_windows.bat`, or run it from `cmd`.
-
-## Manual build
-
-To compile locally:
-
-```bash
-gcc -o dnd_game main.c -Wall -std=c99 -O2
-./dnd_game
-```
-
-## Releases and packaging
-
-Run `package_release.sh` to create local release packages in `dist/`, or
-publish a GitHub Release and let the workflow `.github/workflows/release.yml`
-build and attach official release artifacts:
-
-- `dnd-game-linux.tar.gz`
-- `dnd-game-windows.zip` (built on Windows runner; contains `dnd_game.exe`)
-- `dnd-game-macos.zip`
-
-Provide `dnd-game-windows.zip` to Windows testers so they can run the game
-without compiling. Optionally create a desktop shortcut to `dnd_game.exe` or
-`start_windows.bat` for easy launching.
-
-## Saves
-
-Saved characters are plain-text files in the `saves/` directory.
-
-## Project files
-
-- `main.c` — game source
-- `README.md` — this file
-- `Dockerfile`, `build_docker.sh`, `run_game.sh` — Docker support
-- `start.sh`, `start_linux.sh`, `start_macos.sh`, `start_windows.bat` — launchers
-- `build_windows.sh` — MinGW helper for Windows `.exe`
-- `package_release.sh` — local packaging helper
-- `.github/workflows/release.yml` — CI workflow for release assets
-
-## Contributing
-
-Bug reports and pull requests are welcome. Please open issues or PRs against
-the `main` branch.
-
-## License
-
-Add your license file to the repository (e.g. `LICENSE`).
+Una ricca avventura testuale single-player da terminale ispirata alle regole di **Dungeons & Dragons 5e**, scritta interamente in **C**. Crea il tuo eroe distribuendo le statistiche con lo *Standard Array*, seleziona razza e classe, gestisci l'inventario e affronta mostri e boss in un sistema di combattimento a turni guidato dai classici tiri di dado ($d20$).
 
 ---
 
-If you want, I can create a draft release to trigger the Actions workflow and
-verify that the Windows `.exe` is produced on the GitHub runner.
+## 🚀 Caratteristiche Principali
+
+* **Creazione Personaggio Completa:** Scelta di Razza, Classe e allocazione delle caratteristiche (15, 14, 13, 12, 10, 8) con calcolo automatico dei modificatori e dei Punti Ferita ($HP$).
+* **Meccaniche di Classe Avanzate:** Gestione degli slot incantesimo per i maghi, punti *Ira* (Rage) per i Barbari, punti *Ki* per i Monaci e Punti Azione per i Guerrieri.
+* **Sistema di Combattimento Dinamico:** Iniziativa basata sulla Destrezza, tiri per colpire contro la Classe Armatura ($AC$), gestione degli stati alterati (es. Stordimento) e Loot casuale.
+* **Salvataggio Persistente:** Riprendi l'avventura quando vuoi. I salvataggi vengono gestiti automaticamente in formato flat-file all'interno della cartella `saves/` (con pieno supporto ai nomi con spazi).
+* **Cross-Platform CI/CD:** Pipeline automatizzata tramite GitHub Actions che compila ed esporta nativamente gli eseguibili per **Linux**, **Windows** (`.exe`) e **macOS**.
+
+---
+
+## 🎮 Avvio Rapido
+
+### 🐧 Linux & 🍏 macOS
+Il repository include un launcher universale che automatizza i permessi e gestisce l'avvio:
+```bash
+chmod +x start.sh
+./start.sh
